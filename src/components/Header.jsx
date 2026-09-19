@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Menu, Calendar, ShieldCheck, Download } from 'lucide-react';
+import { Menu, Calendar, ShieldCheck, FileText } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 
 export default function Header({ onOpenMobileMenu, title = "Dashboard" }) {
   const { user } = useAuth();
-  const { exportToCSV } = useFinance();
+  const { exportToPDF } = useFinance();
 
   const todayStr = new Date().toLocaleDateString('en-MY', {
     weekday: 'short',
@@ -70,14 +70,14 @@ export default function Header({ onOpenMobileMenu, title = "Dashboard" }) {
           <span>{user.isGuest ? 'Guest Mode' : 'Online Sync'}</span>
         </div>
 
-        {/* Quick CSV Export */}
+        {/* Quick PDF Export */}
         <button
-          onClick={exportToCSV}
+          onClick={() => exportToPDF(user)}
           className="btn btn-secondary btn-sm"
-          title="Export CSV"
+          title="Export PDF"
         >
-          <Download size={15} />
-          <span className="export-text">Export CSV</span>
+          <FileText size={15} />
+          <span className="export-text">Export PDF</span>
         </button>
       </div>
 

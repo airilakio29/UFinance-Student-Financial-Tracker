@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { generateFinancialPDF } from '../utils/pdfExport';
 
 const FinanceContext = createContext();
 
@@ -285,7 +286,20 @@ export function FinanceProvider({ children }) {
     setSavingsGoals(prev => prev.filter(g => g.id !== id));
   };
 
-  // Data Export to CSV
+  // Data Export to PDF
+  const exportToPDF = (user) => {
+    generateFinancialPDF({
+      transactions,
+      categories,
+      totalBalance,
+      totalIncome,
+      totalExpense,
+      totalSavedInGoals,
+      user
+    });
+  };
+
+  // Data Export to CSV (Legacy fallback)
   const exportToCSV = () => {
     const headers = ['ID', 'Date', 'Type', 'Title', 'Amount (RM)', 'Category', 'Recurring', 'Note'];
     const rows = transactions.map(t => {
@@ -374,6 +388,7 @@ export function FinanceProvider({ children }) {
       addSavingsGoal,
       depositToSavingsGoal,
       deleteSavingsGoal,
+      exportToPDF,
       exportToCSV,
       exportJSONBackup,
       importJSONBackup,

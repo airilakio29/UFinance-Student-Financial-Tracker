@@ -13,7 +13,7 @@ A simple, modern, student-focused financial management website designed to track
   - Direct SVG Category Spending Pie Chart with interactive hover tooltips & legend.
   - Semester Budget Health progress meter.
   - Recent transaction history table.
-- **💳 Income & Expense Tracking**: Filter by search, category, or type. Supports recurring transactions (e.g. monthly hostel rent or allowance) and instant **CSV Data Export**.
+- **💳 Income & Expense Tracking**: Filter by search, category, or type. Supports recurring transactions (e.g. monthly hostel rent or allowance) and instant **PDF Data Export**.
 - **🎯 Category Budget Caps**: Set monthly budget limits per category with visual color alerts (Green <70%, Amber 70-90%, Red >90%).
 - **🌱 Savings Goals**: Set goals for laptops, reference textbooks, or emergency funds with target dates, visual progress bars, and deposit modal forms.
 - **⚙️ Data Management & Guest Mode**: LocalStorage persistence, custom category creation, LocalStorage JSON backup/restore, and instant Guest Mode toggle.

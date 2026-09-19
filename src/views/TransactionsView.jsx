@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useFinance } from '../context/FinanceContext';
+import { useAuth } from '../context/AuthContext';
 import { 
   Search, 
   Filter, 
   PlusCircle, 
-  Download, 
+  FileText, 
   Trash2, 
   Edit3, 
   Repeat,
@@ -13,7 +14,8 @@ import {
 } from 'lucide-react';
 
 export default function TransactionsView({ onOpenAddTransaction, onEditTransaction }) {
-  const { transactions, categories, deleteTransaction, exportToCSV } = useFinance();
+  const { transactions, categories, deleteTransaction, exportToPDF } = useFinance();
+  const { user } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -43,8 +45,8 @@ export default function TransactionsView({ onOpenAddTransaction, onEditTransacti
           </div>
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button onClick={exportToCSV} className="btn btn-secondary">
-              <Download size={16} /> Export CSV
+            <button onClick={() => exportToPDF(user)} className="btn btn-secondary">
+              <FileText size={16} /> Export PDF
             </button>
             <button onClick={onOpenAddTransaction} className="btn btn-primary">
               <PlusCircle size={16} /> + Add Transaction
