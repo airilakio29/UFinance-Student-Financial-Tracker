@@ -16,12 +16,14 @@ import TransactionModal from './components/TransactionModal';
 import BudgetModal from './components/BudgetModal';
 import SavingsModal from './components/SavingsModal';
 import CategoryModal from './components/CategoryModal';
+import LoginModal from './components/LoginModal';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // Modal Control States
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
 
@@ -126,6 +128,7 @@ export default function App() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             onOpenAddTransaction={handleOpenAddTransaction}
+            onOpenLoginModal={() => setIsLoginModalOpen(true)}
             isMobileOpen={isMobileOpen}
             setIsMobileOpen={setIsMobileOpen}
           />
@@ -135,6 +138,7 @@ export default function App() {
             <Header
               title={getPageTitle()}
               onOpenMobileMenu={() => setIsMobileOpen(true)}
+              onOpenLoginModal={() => setIsLoginModalOpen(true)}
             />
 
             <main className="content-area">
@@ -143,6 +147,11 @@ export default function App() {
           </div>
 
           {/* Floating Modals */}
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+
           <TransactionModal
             isOpen={isTransactionModalOpen}
             onClose={() => setIsTransactionModalOpen(false)}

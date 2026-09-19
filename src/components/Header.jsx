@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Menu, Calendar, ShieldCheck, FileText } from 'lucide-react';
+import { Menu, Calendar, ShieldCheck, FileText, LogIn } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 
-export default function Header({ onOpenMobileMenu, title = "Dashboard" }) {
+export default function Header({ onOpenMobileMenu, onOpenLoginModal, title = "Dashboard" }) {
   const { user } = useAuth();
   const { exportToPDF } = useFinance();
 
@@ -64,11 +64,21 @@ export default function Header({ onOpenMobileMenu, title = "Dashboard" }) {
           <span>{todayStr}</span>
         </div>
 
-        {/* Guest Mode Status Badge */}
+        {/* Guest / User Status Badge */}
         <div className={`badge ${user.isGuest ? 'badge-guest' : 'badge-income'}`}>
           <ShieldCheck size={13} />
-          <span>{user.isGuest ? 'Guest Mode' : 'Online Sync'}</span>
+          <span>{user.isGuest ? 'Guest Mode' : 'Signed In'}</span>
         </div>
+
+        {/* Sign In / Switch Account Button */}
+        <button
+          onClick={onOpenLoginModal}
+          className="btn btn-primary btn-sm"
+          title="Sign In / Switch Account"
+        >
+          <LogIn size={15} />
+          <span className="export-text">{user.isGuest ? 'Sign In' : 'Switch User'}</span>
+        </button>
 
         {/* Quick PDF Export */}
         <button
