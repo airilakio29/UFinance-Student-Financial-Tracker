@@ -9,6 +9,8 @@ import {
   PlusCircle, 
   UserCheck,
   UserX,
+  GraduationCap, 
+  LogIn, 
   LogOut,
   Menu,
   X
@@ -16,6 +18,8 @@ import {
 
 export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction, isMobileOpen, setIsMobileOpen }) {
   const { user, toggleGuestMode, logout } = useAuth();
+export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction, onOpenLoginModal, isMobileOpen, setIsMobileOpen }) {
+  const { user, logout } = useAuth();
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -73,6 +77,8 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
                 fontFamily: 'Plus Jakarta Sans',
                 fontWeight: 800,
                 fontSize: '1rem'
+                justify: 'center',
+                color: 'var(--primary)'
               }}>
                 KK
               </div>
@@ -150,7 +156,7 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
           </nav>
         </div>
 
-        {/* Footer User Profile & Guest Mode Tag */}
+        {/* Footer User Profile & Sign In */}
         <div style={{
           paddingTop: '1.25rem',
           borderTop: '1px solid rgba(255,255,255,0.1)',
@@ -170,37 +176,44 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
                 height: '36px',
                 borderRadius: '50%',
                 background: user.isGuest ? '#F59E0B' : '#624873',
+                background: user.isGuest ? '#F59E0B' : 'var(--primary)',
                 color: '#FFF',
                 display: 'flex',
                 alignItems: 'center',
                 justify: 'center',
                 fontWeight: 700,
-                fontSize: '0.85rem'
+                fontSize: '1rem'
               }}>
-                {user.username.charAt(0)}
+                {user.avatar || user.username.charAt(0)}
               </div>
-              <div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#FFF' }}>
+              <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '110px' }}>
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {user.username}
                 </div>
                 <div style={{ fontSize: '0.7rem', color: user.isGuest ? '#FCD34D' : 'rgba(255, 255, 255, 0.5)' }}>
                   {user.isGuest ? 'Guest Mode (Local)' : 'Authenticated'}
+                <div style={{ fontSize: '0.7rem', color: user.isGuest ? '#FCD34D' : '#6EE7B7', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {user.isGuest ? 'Guest Mode' : user.university || 'Student'}
                 </div>
               </div>
             </div>
 
             <button
-              onClick={toggleGuestMode}
-              title={user.isGuest ? 'Switch to Authenticated Mode' : 'Switch to Guest Mode'}
+              onClick={onOpenLoginModal}
+              title="Sign In / Switch Account"
               style={{
-                background: 'transparent',
+                background: 'rgba(255,255,255,0.1)',
                 border: 'none',
                 color: '#A7F3D0',
+                borderRadius: 'var(--radius-sm)',
                 cursor: 'pointer',
-                padding: '0.35rem'
+                padding: '0.4rem',
+                display: 'flex',
+                alignItems: 'center',
+                justify: 'center'
               }}
             >
-              {user.isGuest ? <UserX size={18} /> : <UserCheck size={18} />}
+              <LogIn size={18} />
             </button>
           </div>
 

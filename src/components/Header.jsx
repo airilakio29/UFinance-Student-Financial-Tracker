@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Menu, Calendar, ShieldCheck, Download } from 'lucide-react';
+import { Menu, Calendar, ShieldCheck, FileText, LogIn } from 'lucide-react';
 import { useFinance } from '../context/FinanceContext';
 
-export default function Header({ onOpenMobileMenu, title = "Dashboard" }) {
+export default function Header({ onOpenMobileMenu, onOpenLoginModal, title = "Dashboard" }) {
   const { user } = useAuth();
-  const { exportToCSV } = useFinance();
+  const { exportToPDF } = useFinance();
 
   const todayStr = new Date().toLocaleDateString('en-MY', {
     weekday: 'short',
@@ -64,20 +64,30 @@ export default function Header({ onOpenMobileMenu, title = "Dashboard" }) {
           <span>{todayStr}</span>
         </div>
 
-        {/* Guest Mode Status Badge */}
+        {/* Guest / User Status Badge */}
         <div className={`badge ${user.isGuest ? 'badge-guest' : 'badge-income'}`}>
           <ShieldCheck size={13} />
-          <span>{user.isGuest ? 'Guest Mode' : 'Online Sync'}</span>
+          <span>{user.isGuest ? 'Guest Mode' : 'Signed In'}</span>
         </div>
 
-        {/* Quick CSV Export */}
+        {/* Sign In / Switch Account Button */}
         <button
-          onClick={exportToCSV}
-          className="btn btn-secondary btn-sm"
-          title="Export CSV"
+          onClick={onOpenLoginModal}
+          className="btn btn-primary btn-sm"
+          title="Sign In / Switch Account"
         >
-          <Download size={15} />
-          <span className="export-text">Export CSV</span>
+          <LogIn size={15} />
+          <span className="export-text">{user.isGuest ? 'Sign In' : 'Switch User'}</span>
+        </button>
+
+        {/* Quick PDF Export */}
+        <button
+          onClick={() => exportToPDF(user)}
+          className="btn btn-secondary btn-sm"
+          title="Export PDF"
+        >
+          <FileText size={15} />
+          <span className="export-text">Export PDF</span>
         </button>
       </div>
 

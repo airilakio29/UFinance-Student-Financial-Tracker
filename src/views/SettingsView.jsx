@@ -172,10 +172,10 @@ export default function SettingsView({ onOpenAddCategory }) {
           </div>
         </div>
 
-        {/* Account & Guest Mode Toggle */}
+        {/* Account & Predefined Student Entities */}
         <div className="card">
           <div className="card-title">
-            <span>Account & Access Mode</span>
+            <span>Account Profile & Available Entities</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
@@ -189,28 +189,31 @@ export default function SettingsView({ onOpenAddCategory }) {
               alignItems: 'center',
               justify: 'center',
               fontWeight: 700,
-              fontSize: '1.2rem'
+              fontSize: '1.4rem'
             }}>
-              {user.username.charAt(0)}
+              {user.avatar || user.username.charAt(0)}
             </div>
             <div>
               <div style={{ fontWeight: 700, fontSize: '1rem' }}>{user.username}</div>
               <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{user.email}</div>
               <div style={{ fontSize: '0.78rem', color: user.isGuest ? '#B45309' : 'var(--primary)', fontWeight: 600, marginTop: '0.15rem' }}>
-                {user.isGuest ? 'Guest Mode (No password required)' : 'Authenticated Student Profile'}
+                {user.isGuest ? 'Guest Account' : `${user.university || 'Authenticated Student'}`}
               </div>
             </div>
           </div>
 
-          <button onClick={toggleGuestMode} className="btn btn-secondary" style={{ width: '100%' }}>
-            <ShieldCheck size={16} />
-            <span>Switch to {user.isGuest ? 'Authenticated Mode' : 'Guest Mode'}</span>
-          </button>
-
-          <button onClick={logout} className="btn btn-danger" style={{ width: '100%', marginTop: '0.5rem' }}>
-            <LogOut size={16} />
-            <span>Log Out</span>
-          </button>
+          <div style={{ background: 'var(--bg-card-subtle)', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>
+              🔑 PREDEFINED SIGN-IN CREDENTIALS (5 ENTITIES):
+            </div>
+            <ul style={{ fontSize: '0.78rem', margin: 0, paddingLeft: '1.2rem', color: 'var(--text-main)', lineHeight: 1.6 }}>
+              <li><strong>Alex:</strong> <code>User: Alex</code> | <code>Pass: 123456789</code></li>
+              <li><strong>Sarah:</strong> <code>User: Sarah</code> | <code>Pass: sarah2026</code></li>
+              <li><strong>Daniel:</strong> <code>User: Daniel</code> | <code>Pass: daniel123</code></li>
+              <li><strong>Priya:</strong> <code>User: Priya</code> | <code>Pass: priya999</code></li>
+              <li><strong>Marcus:</strong> <code>User: Marcus</code> | <code>Pass: marcuspass</code></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
