@@ -13,14 +13,15 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
     timeStyle: 'medium'
   });
 
-  // Theme Color Palette
-  const primaryColor = [16, 185, 129]; // Emerald #10B981
-  const darkBg = [15, 23, 42]; // Slate 900
-  const incomeColor = [5, 150, 105]; // Emerald dark
-  const expenseColor = [225, 29, 72]; // Rose red
+  // KampusKash Purple Theme Color Palette
+  const primaryColor = [98, 72, 115]; // #624873 KampusKash Purple
+  const darkHeaderBg = [42, 31, 53]; // #2A1F35 Deep Purple Dark
+  const accentPurple = [126, 90, 155]; // #7E5A9B Soft Purple
+  const incomeColor = [40, 167, 69]; // Emerald/Green for Income
+  const expenseColor = [231, 76, 60]; // Rose Red for Expense
   const textColor = [51, 65, 85]; // Slate 700
 
-  // 1. Header Graphic Banner
+  // 1. Header Graphic Banner (KampusKash Theme)
   doc.setFillColor(...primaryColor);
   doc.rect(0, 0, 210, 28, 'F');
 
@@ -28,7 +29,7 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(18);
-  doc.text('UFINANCE', 14, 14);
+  doc.text('KAMPUSKASH', 14, 14);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
@@ -44,7 +45,7 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
   doc.setFillColor(248, 250, 252);
   doc.roundedRect(14, 34, 182, 24, 3, 3, 'FD');
 
-  doc.setTextColor(...darkBg);
+  doc.setTextColor(...darkHeaderBg);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.text('STUDENT PROFILE & STATEMENT METADATA', 18, 41);
@@ -54,14 +55,19 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
   doc.setTextColor(...textColor);
 
   // Left Column: User details
-  doc.text(`Student Name: ${user?.username || 'Alex Student'}`, 18, 47);
-  doc.text(`Email Address: ${user?.email || 'alex.campus@university.edu.my'}`, 18, 52.5);
+  const studentName = user?.username || 'Alex Student';
+  const studentEmail = user?.email || 'alex.campus@university.edu.my';
+  const institution = user?.university || 'Universiti Teknologi Malaysia (UTM)';
+  const accountType = user?.isGuest ? 'Guest Account' : 'Authenticated Student';
+
+  doc.text(`Student Name: ${studentName}`, 18, 47);
+  doc.text(`Email Address: ${studentEmail}`, 18, 52.5);
 
   // Right Column: Institution & Timestamp
-  doc.text(`Institution: ${user?.university || 'University Student'}`, 110, 47);
+  doc.text(`Institution: ${institution} (${accountType})`, 110, 47);
   doc.text(`Generated On: ${timestamp}`, 110, 52.5);
 
-  // 3. Key Financial Summary Cards (Graphic visual representation)
+  // 3. Key Financial Summary Cards (KampusKash Visual Metric Cards)
   const cardY = 64;
   const cardWidth = 42.5;
   const cardHeight = 22;
@@ -71,7 +77,7 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
     { title: 'Total Balance', value: `RM ${totalBalance.toFixed(2)}`, color: totalBalance >= 0 ? primaryColor : expenseColor },
     { title: 'Total Income', value: `RM ${totalIncome.toFixed(2)}`, color: incomeColor },
     { title: 'Total Expense', value: `RM ${totalExpense.toFixed(2)}`, color: expenseColor },
-    { title: 'Saved Goals', value: `RM ${totalSavedInGoals.toFixed(2)}`, color: [59, 130, 246] }
+    { title: 'Saved Goals', value: `RM ${totalSavedInGoals.toFixed(2)}`, color: accentPurple }
   ];
 
   metrics.forEach((m, idx) => {
@@ -101,7 +107,7 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
   // 4. Section Header for Transaction Records
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.setTextColor(...darkBg);
+  doc.setTextColor(...darkHeaderBg);
   doc.text('TRANSACTION RECORDS SUMMARY', 14, 95);
 
   doc.setLineWidth(0.5);
@@ -175,11 +181,11 @@ export function generateFinancialPDF({ transactions, categories, totalBalance, t
     doc.setDrawColor(226, 232, 240);
     doc.line(14, 282, 196, 282);
 
-    doc.text('UFinance Student Financial Tracker — Official Statement Export', 14, 287);
+    doc.text('KampusKash — Your Friendly Campus Wallet | Official Statement Export', 14, 287);
     doc.text(`Page ${i} of ${pageCount}`, 196, 287, { align: 'right' });
   }
 
   // Trigger browser download
   const dateStamp = new Date().toISOString().split('T')[0];
-  doc.save(`student_finance_report_${dateStamp}.pdf`);
+  doc.save(`kampuskash_report_${dateStamp}.pdf`);
 }
