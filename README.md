@@ -57,12 +57,21 @@ A simple, modern, student-focused financial management website designed to track
 
 ---
 
-## 🛠️ Build for Production
+## 🛠️ Build & Deployment to GitHub Pages
 
-To create an optimized production build:
+### 1. Build for Production
+To create an optimized production build targeting GitHub Pages (`/UFinance-Student-Financial-Tracker/`):
 ```bash
 npm run build
 ```
+
+### 2. Deploy to GitHub Pages
+To build and publish directly to the `gh-pages` branch:
+```bash
+npm run deploy
+```
+
+Alternatively, push changes to the `main` branch, and the automated GitHub Action ([`.github/workflows/deploy.yml`](file:///c:/Users/User/Desktop/iqboboll/Kampus-Kash/.github/workflows/deploy.yml)) will build and deploy the application automatically to `https://airilakio29.github.io/UFinance-Student-Financial-Tracker/`.
 
 ---
 
