@@ -20,7 +20,6 @@ import CategoryModal from './components/CategoryModal';
 import LoginModal from './components/LoginModal';
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -125,6 +124,7 @@ function AppContent() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenAddTransaction={handleOpenAddTransaction}
+        onOpenLoginModal={() => setIsLoginModalOpen(true)}
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
       />
@@ -133,12 +133,18 @@ function AppContent() {
         <Header
           title={getPageTitle()}
           onOpenMobileMenu={() => setIsMobileOpen(true)}
+          onOpenLoginModal={() => setIsLoginModalOpen(true)}
         />
 
         <main className="content-area">
           {renderActiveView()}
         </main>
       </div>
+
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
 
       <TransactionModal
         isOpen={isTransactionModalOpen}
@@ -166,72 +172,6 @@ function AppContent() {
   );
 }
 
-export default function App() {
-  return (
-    <AuthProvider>
-      <FinanceProvider>
-        <AppAuthenticator />
-        <div className="app-container">
-          {/* Subtle Sparkling Gem Particle Background Canvas */}
-          <GlitterBackground />
-
-          {/* Desktop Sidebar & Mobile Responsive Drawer */}
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            onOpenAddTransaction={handleOpenAddTransaction}
-            onOpenLoginModal={() => setIsLoginModalOpen(true)}
-            isMobileOpen={isMobileOpen}
-            setIsMobileOpen={setIsMobileOpen}
-          />
-
-          {/* Main Dashboard Wrapper */}
-          <div className="main-wrapper">
-            <Header
-              title={getPageTitle()}
-              onOpenMobileMenu={() => setIsMobileOpen(true)}
-              onOpenLoginModal={() => setIsLoginModalOpen(true)}
-            />
-
-            <main className="content-area">
-              {renderActiveView()}
-            </main>
-          </div>
-
-          {/* Floating Modals */}
-          <LoginModal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-          />
-
-          <TransactionModal
-            isOpen={isTransactionModalOpen}
-            onClose={() => setIsTransactionModalOpen(false)}
-            initialData={editingTransaction}
-          />
-
-          <BudgetModal
-            isOpen={isBudgetModalOpen}
-            onClose={() => setIsBudgetModalOpen(false)}
-          />
-
-          <SavingsModal
-            isOpen={isSavingsModalOpen}
-            onClose={() => setIsSavingsModalOpen(false)}
-            mode={savingsModalMode}
-            goalId={selectedSavingsGoalId}
-          />
-
-          <CategoryModal
-            isOpen={isCategoryModalOpen}
-            onClose={() => setIsCategoryModalOpen(false)}
-          />
-        </div>
-      </FinanceProvider>
-    </AuthProvider>
-  );
-}
-
 function AppAuthenticator() {
   const { isAuthenticated } = useAuth();
 
@@ -240,4 +180,14 @@ function AppAuthenticator() {
   }
 
   return <AppContent />;
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <FinanceProvider>
+        <AppAuthenticator />
+      </FinanceProvider>
+    </AuthProvider>
+  );
 }
