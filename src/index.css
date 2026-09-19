@@ -1,29 +1,31 @@
 /* ==========================================================================
-   STUDENT FINANCE TRACKER — DESIGN SYSTEM & BASE STYLES
+   UFINANCE — GREEN GEMSTONE DESIGN SYSTEM & BASE STYLES
    ========================================================================== */
 
 :root {
-  /* Color Tokens */
-  --bg-app: #F4F7F5;
+  /* Green Gemstone Color Tokens */
+  --bg-app: #1FA35D;
   --bg-card: #FFFFFF;
-  --bg-card-subtle: #F9FAFB;
-  --bg-sidebar: #1E3A2F;
-  --bg-sidebar-active: #2D5A47;
+  --bg-card-subtle: #F6F9F7;
+  --bg-sidebar: #0F3826;
+  --bg-sidebar-active: #1C543A;
   
-  --primary: #2D6A4F;
-  --primary-hover: #1B4332;
-  --primary-light: #D8F3DC;
-  --primary-badge: #E8F5E9;
+  --primary: #197247;
+  --primary-hover: #115333;
+  --primary-light: #D1FAE5;
+  --primary-badge: #E6F7ED;
   
-  --sage-accent: #52B788;
-  --sage-glow: rgba(82, 183, 136, 0.25);
-  --mint-sparkle: #74C69D;
+  --sage-accent: #2ECC71;
+  --sage-glow: rgba(46, 204, 113, 0.25);
+  --mint-sparkle: #A7F3D0;
   --emerald-accent: #10B981;
-  --gold-sparkle: #FBBF24;
+  --gold-sparkle: #F39C12;
+  --ruby-sparkle: #E74C3C;
+  --sapphire-sparkle: #00A8FF;
   
-  --text-main: #1B2D23;
-  --text-muted: #5C7065;
-  --text-light: #8E9F95;
+  --text-main: #0F2D1E;
+  --text-muted: #4A6355;
+  --text-light: #7A9486;
   --text-white: #FFFFFF;
   
   --income: #10B981;
@@ -33,18 +35,18 @@
   --warning: #F59E0B;
   --warning-bg: #FEF3C7;
   
-  --border-light: rgba(0, 0, 0, 0.06);
-  --border-focus: #52B788;
+  --border-light: rgba(15, 45, 30, 0.08);
+  --border-focus: #2ECC71;
   
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 24px;
   
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
-  --shadow-card: 0 10px 30px -5px rgba(27, 45, 35, 0.05), 0 4px 12px rgba(0, 0, 0, 0.02);
-  --shadow-hover: 0 16px 36px -4px rgba(27, 45, 35, 0.09);
-  --shadow-modal: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 12px 32px -4px rgba(10, 40, 20, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 18px 40px -4px rgba(10, 40, 20, 0.18);
+  --shadow-modal: 0 24px 48px -12px rgba(0, 0, 0, 0.28);
   
   --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
@@ -85,7 +87,7 @@ body {
   height: 100vh;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 /* Main Dashboard Area */
@@ -111,11 +113,11 @@ body {
 .card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   box-shadow: var(--shadow-card);
   padding: 1.5rem;
   transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
 }
 
 .card:hover {
@@ -256,13 +258,13 @@ body {
 .btn-primary {
   background: var(--primary);
   color: var(--text-white);
-  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.25);
+  box-shadow: 0 4px 14px rgba(25, 114, 71, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(45, 106, 79, 0.35);
+  box-shadow: 0 6px 18px rgba(25, 114, 71, 0.4);
 }
 
 .btn-secondary {
@@ -274,7 +276,7 @@ body {
 .btn-secondary:hover {
   background: var(--primary-badge);
   color: var(--primary);
-  border-color: rgba(82, 183, 136, 0.3);
+  border-color: rgba(46, 204, 113, 0.3);
 }
 
 .btn-danger {
@@ -369,7 +371,7 @@ body {
 }
 
 .custom-table tr:hover td {
-  background: rgba(216, 243, 220, 0.2);
+  background: rgba(46, 204, 113, 0.08);
 }
 
 /* Form Controls */
@@ -421,7 +423,7 @@ body {
 }
 
 .progress-safe {
-  background: linear-gradient(90deg, #52B788, #10B981);
+  background: linear-gradient(90deg, #2ECC71, #10B981);
 }
 
 .progress-warning {
@@ -439,8 +441,8 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 28, 22, 0.55);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 35, 20, 0.65);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;

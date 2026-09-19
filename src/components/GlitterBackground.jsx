@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
 /**
- * GlitterBackground renders subtle, sparkling gem-like particles 
- * and ambient green lighting behind the UI.
+ * GlitterBackground renders a vibrant green textured background 
+ * scattered with colorful 3D faceted gemstones, rhinestones, crystal butterflies, 
+ * and sparkling diamonds inspired by the reference image.
  */
 export default function GlitterBackground() {
   const canvasRef = useRef(null);
@@ -23,94 +24,214 @@ export default function GlitterBackground() {
 
     window.addEventListener('resize', handleResize);
 
-    // Particle gems array
-    const particlesCount = 45;
-    const particles = [];
-    const colors = [
-      '#10B981', // Emerald
-      '#52B788', // Sage
-      '#A7F3D0', // Mint
-      '#34D399', // Bright Mint
-      '#FBBF24', // Subtle Gold Crystal
-      '#D8F3DC'  // Pale Sage
+    // Vibrant gem color palette from reference image
+    const gemPalettes = [
+      { name: 'ruby', main: '#E74C3C', light: '#FFA39E', dark: '#900C3F', highlight: '#FFF' },
+      { name: 'sapphire', main: '#00A8FF', light: '#7ED6DF', dark: '#0984E3', highlight: '#FFF' },
+      { name: 'gold', main: '#F39C12', light: '#FFEAA7', dark: '#D35400', highlight: '#FFF' },
+      { name: 'emerald', main: '#2ECC71', light: '#55EFC4', dark: '#10AC84', highlight: '#FFF' },
+      { name: 'pink', main: '#FF007F', light: '#FF9FF3', dark: '#C71585', highlight: '#FFF' },
+      { name: 'amethyst', main: '#9B59B6', light: '#D6A2E8', dark: '#6C5CE7', highlight: '#FFF' },
+      { name: 'diamond', main: '#E2E8F0', light: '#FFFFFF', dark: '#94A3B8', highlight: '#FFF' }
     ];
 
-    for (let i = 0; i < particlesCount; i++) {
-      particles.push({
+    const stonesCount = 55;
+    const stones = [];
+
+    for (let i = 0; i < stonesCount; i++) {
+      const palette = gemPalettes[Math.floor(Math.random() * gemPalettes.length)];
+      const type = Math.random() > 0.82 ? 'butterfly' : Math.random() > 0.7 ? 'star' : 'rhinestone';
+      
+      stones.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2.8 + 0.8,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: Math.random() * 0.6 + 0.15,
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        sides: Math.random() > 0.4 ? 4 : 6 // Diamond/gem shape
+        radius: Math.random() * 6.5 + 4.5, // 5px to 11px rhinestone size
+        palette,
+        type,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.01,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.01
       });
     }
 
-    const drawGem = (ctx, x, y, radius, sides, color, alpha) => {
+    // Helper to draw realistic 3D faceted round rhinestone
+    const drawRhinestone = (ctx, x, y, radius, palette, pulseAlpha) => {
       ctx.save();
-      ctx.beginPath();
       ctx.translate(x, y);
-      ctx.fillStyle = color;
-      ctx.globalAlpha = alpha;
 
-      // Draw diamond / gem star shape
-      for (let i = 0; i < sides; i++) {
-        const angle = (i * 2 * Math.PI) / sides;
-        const px = Math.cos(angle) * radius;
-        const py = Math.sin(angle) * radius;
+      // 1. Soft 3D drop shadow
+      ctx.beginPath();
+      ctx.arc(2, 3, radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 20, 10, 0.35)';
+      ctx.fill();
+
+      // 2. Base gem circle gradient
+      const baseGrad = ctx.createRadialGradient(-radius * 0.3, -radius * 0.3, radius * 0.1, 0, 0, radius);
+      baseGrad.addColorStop(0, palette.light);
+      baseGrad.addColorStop(0.5, palette.main);
+      baseGrad.addColorStop(1, palette.dark);
+
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fillStyle = baseGrad;
+      ctx.fill();
+      ctx.lineWidth = 0.8;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.stroke();
+
+      // 3. Facet pattern (inner star lines for gem reflections)
+      ctx.beginPath();
+      const facets = 8;
+      for (let i = 0; i < facets; i++) {
+        const angle = (i * 2 * Math.PI) / facets;
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(angle) * (radius * 0.85), Math.sin(angle) * (radius * 0.85));
+      }
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+
+      // Inner table facet octagonal ring
+      ctx.beginPath();
+      for (let i = 0; i < facets; i++) {
+        const angle = (i * 2 * Math.PI) / facets;
+        const px = Math.cos(angle) * (radius * 0.45);
+        const py = Math.sin(angle) * (radius * 0.45);
         if (i === 0) ctx.moveTo(px, py);
         else ctx.lineTo(px, py);
       }
       ctx.closePath();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
       ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.stroke();
 
-      // Outer sparkle glow
+      // 4. Bright 3D specular glare highlight
       ctx.beginPath();
-      ctx.arc(0, 0, radius * 1.8, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.globalAlpha = alpha * 0.25;
+      ctx.arc(-radius * 0.35, -radius * 0.35, radius * 0.28, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${0.75 + Math.sin(pulseAlpha) * 0.2})`;
       ctx.fill();
 
+      // Extra tiny glare dot
+      ctx.beginPath();
+      ctx.arc(radius * 0.3, radius * 0.3, radius * 0.12, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.fill();
+
+      ctx.restore();
+    };
+
+    // Helper to draw silver/crystal butterfly gem
+    const drawButterfly = (ctx, x, y, radius, rotation) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+
+      // Drop shadow
+      ctx.fillStyle = 'rgba(0, 20, 10, 0.3)';
+      ctx.beginPath();
+      ctx.ellipse(2, 3, radius * 1.1, radius * 0.7, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Left & right wings gradient
+      const wingGrad = ctx.createLinearGradient(-radius, -radius, radius, radius);
+      wingGrad.addColorStop(0, '#FFFFFF');
+      wingGrad.addColorStop(0.5, '#D1D5DB');
+      wingGrad.addColorStop(1, '#9CA3AF');
+
+      // Left wing
+      ctx.beginPath();
+      ctx.ellipse(-radius * 0.5, -radius * 0.2, radius * 0.6, radius * 0.45, -Math.PI / 6, 0, Math.PI * 2);
+      ctx.fillStyle = wingGrad;
+      ctx.fill();
+      ctx.strokeStyle = '#FFF';
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+
+      // Right wing
+      ctx.beginPath();
+      ctx.ellipse(radius * 0.5, -radius * 0.2, radius * 0.6, radius * 0.45, Math.PI / 6, 0, Math.PI * 2);
+      ctx.fillStyle = wingGrad;
+      ctx.fill();
+      ctx.stroke();
+
+      // Lower wings
+      ctx.beginPath();
+      ctx.ellipse(-radius * 0.4, radius * 0.4, radius * 0.4, radius * 0.3, Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.ellipse(radius * 0.4, radius * 0.4, radius * 0.4, radius * 0.3, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Center body gem
+      ctx.beginPath();
+      ctx.ellipse(0, 0, radius * 0.15, radius * 0.55, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#4B5563';
+      ctx.fill();
+
+      ctx.restore();
+    };
+
+    // Helper to draw sparkling 4-point crystal star
+    const drawStar = (ctx, x, y, radius) => {
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.beginPath();
+      ctx.fillStyle = '#FFFFFF';
+      for (let i = 0; i < 4; i++) {
+        ctx.rotate(Math.PI / 2);
+        ctx.lineTo(0, radius * 1.5);
+        ctx.lineTo(radius * 0.2, radius * 0.2);
+      }
+      ctx.fill();
       ctx.restore();
     };
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Render subtle background green ambient radial gradients
-      const grad1 = ctx.createRadialGradient(width * 0.2, height * 0.3, 10, width * 0.2, height * 0.3, 450);
-      grad1.addColorStop(0, 'rgba(82, 183, 136, 0.08)');
-      grad1.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad1;
+      // Base emerald green gradient canvas
+      const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+      bgGrad.addColorStop(0, '#1FA35D');
+      bgGrad.addColorStop(0.5, '#23B168');
+      bgGrad.addColorStop(1, '#1A8F51');
+      ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      const grad2 = ctx.createRadialGradient(width * 0.8, height * 0.7, 10, width * 0.8, height * 0.7, 500);
-      grad2.addColorStop(0, 'rgba(16, 185, 129, 0.06)');
-      grad2.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad2;
+      // Subtle felt green texture overlay
+      const textureGrad = ctx.createRadialGradient(width * 0.5, height * 0.4, 50, width * 0.5, height * 0.4, width * 0.7);
+      textureGrad.addColorStop(0, 'rgba(255, 255, 255, 0.05)');
+      textureGrad.addColorStop(1, 'rgba(0, 0, 0, 0.08)');
+      ctx.fillStyle = textureGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Render glittering gemstone particles
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Twinkle pulse effect
-        p.alpha += p.twinkleSpeed;
-        if (p.alpha > 0.75 || p.alpha < 0.1) {
-          p.twinkleSpeed = -p.twinkleSpeed;
-        }
+      // Render all scattered 3D glittery gemstones
+      stones.forEach(s => {
+        s.x += s.vx;
+        s.y += s.vy;
+        s.rotation += s.rotSpeed;
+        s.pulse += s.pulseSpeed;
 
         // Screen wrap
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+        if (s.x < -10) s.x = width + 10;
+        if (s.x > width + 10) s.x = -10;
+        if (s.y < -10) s.y = height + 10;
+        if (s.y > height + 10) s.y = -10;
 
-        drawGem(ctx, p.x, p.y, p.radius, p.sides, p.color, Math.max(0.05, p.alpha));
+        if (s.type === 'rhinestone') {
+          drawRhinestone(ctx, s.x, s.y, s.radius, s.palette, s.pulse);
+        } else if (s.type === 'butterfly') {
+          drawButterfly(ctx, s.x, s.y, s.radius, s.rotation);
+        } else {
+          drawStar(ctx, s.x, s.y, s.radius * 0.8);
+        }
       });
 
       animationFrameId = requestAnimationFrame(render);
