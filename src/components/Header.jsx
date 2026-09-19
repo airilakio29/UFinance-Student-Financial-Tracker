@@ -20,9 +20,9 @@ export default function Header({ onOpenMobileMenu, onOpenLoginModal, title = "Da
       alignItems: 'center',
       justify: 'space-between',
       padding: '1.25rem 2rem',
-      background: 'rgba(255, 255, 255, 0.75)',
+      background: 'rgba(98, 72, 115, 0.92)',
       backdropFilter: 'blur(12px)',
-      borderBottom: '1px solid var(--border-light)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
       position: 'sticky',
       top: 0,
       zIndex: 90
@@ -37,10 +37,10 @@ export default function Header({ onOpenMobileMenu, onOpenLoginModal, title = "Da
         </button>
 
         <div>
-          <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
+          <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF' }}>
             {title}
           </h2>
-          <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.15rem' }}>
+          <div style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.7)', display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.15rem' }}>
             <span>Welcome back, <strong>{user.username}</strong> 👋</span>
           </div>
         </div>
@@ -52,15 +52,15 @@ export default function Header({ onOpenMobileMenu, onOpenLoginModal, title = "Da
           display: 'flex',
           alignItems: 'center',
           gap: '0.45rem',
-          background: 'var(--bg-card-subtle)',
+          background: 'rgba(255, 255, 255, 0.12)',
           padding: '0.45rem 0.85rem',
           borderRadius: '20px',
-          border: '1px solid var(--border-light)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           fontSize: '0.82rem',
-          color: 'var(--text-muted)',
+          color: 'rgba(255, 255, 255, 0.8)',
           fontWeight: 500
         }}>
-          <Calendar size={14} color="var(--primary)" />
+          <Calendar size={14} color="rgba(255, 255, 255, 0.8)" />
           <span>{todayStr}</span>
         </div>
 

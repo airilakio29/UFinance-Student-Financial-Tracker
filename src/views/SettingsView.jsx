@@ -10,7 +10,8 @@ import {
   ShieldCheck, 
   Tag, 
   CheckCircle2, 
-  AlertTriangle 
+  AlertTriangle,
+  LogOut
 } from 'lucide-react';
 
 export default function SettingsView({ onOpenAddCategory }) {
@@ -21,7 +22,7 @@ export default function SettingsView({ onOpenAddCategory }) {
     importJSONBackup, 
     resetToSampleData 
   } = useFinance();
-  const { user, toggleGuestMode } = useAuth();
+  const { user, toggleGuestMode, logout } = useAuth();
 
   const fileInputRef = useRef(null);
   const [msg, setMsg] = useState({ text: '', isError: false });

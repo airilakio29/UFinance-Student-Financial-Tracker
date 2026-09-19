@@ -7,6 +7,8 @@ import {
   PiggyBank, 
   Settings, 
   PlusCircle, 
+  UserCheck,
+  UserX,
   GraduationCap, 
   LogIn, 
   LogOut,
@@ -14,6 +16,8 @@ import {
   X
 } from 'lucide-react';
 
+export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction, isMobileOpen, setIsMobileOpen }) {
+  const { user, toggleGuestMode, logout } = useAuth();
 export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction, onOpenLoginModal, isMobileOpen, setIsMobileOpen }) {
   const { user, logout } = useAuth();
 
@@ -65,20 +69,25 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
                 width: '42px',
                 height: '42px',
                 borderRadius: 'var(--radius-md)',
-                background: 'var(--primary-light)',
+                background: 'rgba(255, 255, 255, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
+                color: '#FFFFFF',
+                fontFamily: 'Plus Jakarta Sans',
+                fontWeight: 800,
+                fontSize: '1rem'
                 justify: 'center',
                 color: 'var(--primary)'
               }}>
-                <GraduationCap size={26} />
+                KK
               </div>
               <div>
                 <h1 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>
-                  StudentPay
+                  KampusKash
                 </h1>
-                <span style={{ fontSize: '0.72rem', color: '#A7F3D0', fontWeight: 500 }}>
-                  Ringgit Financial Tracker
+                <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.6)', fontWeight: 500 }}>
+                  Your friendly campus wallet
                 </span>
               </div>
             </div>
@@ -101,7 +110,7 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
             className="btn"
             style={{
               width: '100%',
-              background: 'linear-gradient(135deg, var(--sage-accent), var(--primary))',
+              background: 'linear-gradient(135deg, #624873, #4A3657)',
               color: '#FFFFFF',
               marginBottom: '1.75rem',
               boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
@@ -132,14 +141,14 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
                     borderRadius: 'var(--radius-md)',
                     border: 'none',
                     background: isActive ? 'var(--bg-sidebar-active)' : 'transparent',
-                    color: isActive ? '#FFFFFF' : '#A7F3D0',
+                    color: isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.5)',
                     fontWeight: isActive ? 600 : 500,
                     fontSize: '0.92rem',
                     cursor: 'pointer',
                     transition: 'all var(--transition-fast)'
                   }}
                 >
-                  <Icon size={20} color={isActive ? '#34D399' : '#A7F3D0'} />
+                  <Icon size={20} color={isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.5)'} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -166,6 +175,7 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
+                background: user.isGuest ? '#F59E0B' : '#624873',
                 background: user.isGuest ? '#F59E0B' : 'var(--primary)',
                 color: '#FFF',
                 display: 'flex',
@@ -180,6 +190,8 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
                 <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {user.username}
                 </div>
+                <div style={{ fontSize: '0.7rem', color: user.isGuest ? '#FCD34D' : 'rgba(255, 255, 255, 0.5)' }}>
+                  {user.isGuest ? 'Guest Mode (Local)' : 'Authenticated'}
                 <div style={{ fontSize: '0.7rem', color: user.isGuest ? '#FCD34D' : '#6EE7B7', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {user.isGuest ? 'Guest Mode' : user.university || 'Student'}
                 </div>
@@ -204,6 +216,40 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenAddTransaction,
               <LogIn size={18} />
             </button>
           </div>
+
+          <button
+            onClick={logout}
+            title="Log Out"
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              marginTop: '0.75rem',
+              padding: '0.6rem',
+              background: 'rgba(231, 76, 60, 0.15)',
+              color: '#FCA5A5',
+              border: '1px solid rgba(231, 76, 60, 0.2)',
+              borderRadius: '4px',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              fontFamily: 'var(--font-sans)',
+              cursor: 'pointer',
+              transition: 'all 0.18s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(231, 76, 60, 0.25)';
+              e.currentTarget.style.borderColor = 'rgba(231, 76, 60, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(231, 76, 60, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(231, 76, 60, 0.2)';
+            }}
+          >
+            <LogOut size={14} />
+            Log Out
+          </button>
         </div>
       </aside>
 
