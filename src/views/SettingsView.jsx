@@ -10,7 +10,8 @@ import {
   ShieldCheck, 
   Tag, 
   CheckCircle2, 
-  AlertTriangle 
+  AlertTriangle,
+  LogOut
 } from 'lucide-react';
 
 export default function SettingsView({ onOpenAddCategory }) {
@@ -21,7 +22,7 @@ export default function SettingsView({ onOpenAddCategory }) {
     importJSONBackup, 
     resetToSampleData 
   } = useFinance();
-  const { user, toggleGuestMode } = useAuth();
+  const { user, toggleGuestMode, logout } = useAuth();
 
   const fileInputRef = useRef(null);
   const [msg, setMsg] = useState({ text: '', isError: false });
@@ -204,6 +205,11 @@ export default function SettingsView({ onOpenAddCategory }) {
           <button onClick={toggleGuestMode} className="btn btn-secondary" style={{ width: '100%' }}>
             <ShieldCheck size={16} />
             <span>Switch to {user.isGuest ? 'Authenticated Mode' : 'Guest Mode'}</span>
+          </button>
+
+          <button onClick={logout} className="btn btn-danger" style={{ width: '100%', marginTop: '0.5rem' }}>
+            <LogOut size={16} />
+            <span>Log Out</span>
           </button>
         </div>
       </div>

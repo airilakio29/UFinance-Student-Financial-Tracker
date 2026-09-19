@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { FinanceProvider } from './context/FinanceContext';
 
 import GlitterBackground from './components/GlitterBackground';
+import Login from './components/Login';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 
@@ -17,23 +18,22 @@ import BudgetModal from './components/BudgetModal';
 import SavingsModal from './components/SavingsModal';
 import CategoryModal from './components/CategoryModal';
 
-export default function App() {
+function AppContent() {
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Modal Control States
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
 
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   
   const [isSavingsModalOpen, setIsSavingsModalOpen] = useState(false);
-  const [savingsModalMode, setSavingsModalMode] = useState('create'); // 'create' | 'deposit'
+  const [savingsModalMode, setSavingsModalMode] = useState('create');
   const [selectedSavingsGoalId, setSelectedSavingsGoalId] = useState(null);
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
-  // Handlers for Modals
   const handleOpenAddTransaction = () => {
     setEditingTransaction(null);
     setIsTransactionModalOpen(true);
@@ -115,58 +115,70 @@ export default function App() {
   };
 
   return (
+    <div className="app-container">
+      <GlitterBackground />
+
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onOpenAddTransaction={handleOpenAddTransaction}
+        isMobileOpen={isMobileOpen}
+        setIsMobileOpen={setIsMobileOpen}
+      />
+
+      <div className="main-wrapper">
+        <Header
+          title={getPageTitle()}
+          onOpenMobileMenu={() => setIsMobileOpen(true)}
+        />
+
+        <main className="content-area">
+          {renderActiveView()}
+        </main>
+      </div>
+
+      <TransactionModal
+        isOpen={isTransactionModalOpen}
+        onClose={() => setIsTransactionModalOpen(false)}
+        initialData={editingTransaction}
+      />
+
+      <BudgetModal
+        isOpen={isBudgetModalOpen}
+        onClose={() => setIsBudgetModalOpen(false)}
+      />
+
+      <SavingsModal
+        isOpen={isSavingsModalOpen}
+        onClose={() => setIsSavingsModalOpen(false)}
+        mode={savingsModalMode}
+        goalId={selectedSavingsGoalId}
+      />
+
+      <CategoryModal
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+      />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
     <AuthProvider>
       <FinanceProvider>
-        <div className="app-container">
-          {/* Subtle Sparkling Gem Particle Background Canvas */}
-          <GlitterBackground />
-
-          {/* Desktop Sidebar & Mobile Responsive Drawer */}
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            onOpenAddTransaction={handleOpenAddTransaction}
-            isMobileOpen={isMobileOpen}
-            setIsMobileOpen={setIsMobileOpen}
-          />
-
-          {/* Main Dashboard Wrapper */}
-          <div className="main-wrapper">
-            <Header
-              title={getPageTitle()}
-              onOpenMobileMenu={() => setIsMobileOpen(true)}
-            />
-
-            <main className="content-area">
-              {renderActiveView()}
-            </main>
-          </div>
-
-          {/* Floating Modals */}
-          <TransactionModal
-            isOpen={isTransactionModalOpen}
-            onClose={() => setIsTransactionModalOpen(false)}
-            initialData={editingTransaction}
-          />
-
-          <BudgetModal
-            isOpen={isBudgetModalOpen}
-            onClose={() => setIsBudgetModalOpen(false)}
-          />
-
-          <SavingsModal
-            isOpen={isSavingsModalOpen}
-            onClose={() => setIsSavingsModalOpen(false)}
-            mode={savingsModalMode}
-            goalId={selectedSavingsGoalId}
-          />
-
-          <CategoryModal
-            isOpen={isCategoryModalOpen}
-            onClose={() => setIsCategoryModalOpen(false)}
-          />
-        </div>
+        <AppAuthenticator />
       </FinanceProvider>
     </AuthProvider>
   );
+}
+
+function AppAuthenticator() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
+  return <AppContent />;
 }
