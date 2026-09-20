@@ -4,6 +4,6 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/UFinance-Student-Financial-Tracker/',
+  base: process.env.VERCEL ? '/' : '/UFinance-Student-Financial-Tracker/',
 })
 
